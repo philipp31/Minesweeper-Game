@@ -9,7 +9,7 @@ public class GameCourse {
 		fieldObj = new Spielfeld(size,numMines,openFields);
 		coordObj = new Coordinates(size);
 		this.size = size;
-		fieldObj.printHiddenField();
+	//	fieldObj.printHiddenField();		// its possible for the programmer to print the hidden field at the beginning
 	}
 	
 	public int evaluateWin(char[][] field, char[][] originalField) {	// test if Player won

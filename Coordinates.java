@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Coordinates{
 	public int zeile;
@@ -21,8 +22,16 @@ public class Coordinates{
 		// short term memory for players move:
 		char zwSpalte;
 		int zwZeile;
-		zwSpalte = reader.next().charAt(0);		// extracting char
-		zwZeile = reader.nextInt();				// extracting int
+		try {
+			zwSpalte = reader.next().charAt(0);		// parse char
+			zwZeile = reader.nextInt();				// parse int
+		}
+		catch (InputMismatchException e) {
+			System.out.println("***** FEHLER ! ******* ");
+			System.out.println("Das eingegebene Format ist leider falsch! Erst Buchstaben, dann Zahl angeben! ");
+			zwSpalte = 'z';	// choosing false values to cause a false return!
+			zwZeile = (-1);
+		}
 		reader.next();
 		reader.next();
 		if(checkCoord(zwSpalte,zwZeile,size)) {	// check if the "move" was successfull
@@ -39,9 +48,17 @@ public class Coordinates{
 	
 	public boolean readAction() {
 		System.out.print("Enter action(1 for 'move onto', 2 for 'defuse'): ");
-		action = reader.nextInt();
+		try {
+			action = reader.nextInt();
+		}
+		catch(InputMismatchException e) {
+			System.out.println("***** FEHLER ! ******* ");
+			System.out.println("Das eingegebene Format ist leider falsch! (Zahl 1 oder 2 gefordert!) ");
+			action = 5;	// choosing false values to cause a false return!
+		}
 		reader.next();
 		reader.next();
+		System.out.println("");
 		if(action > 2 || action < 1) {
 			return false;	// return false for false input
 		}

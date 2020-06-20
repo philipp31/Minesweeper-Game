@@ -93,7 +93,12 @@ public class Spielfeld {
 		for(int i = 1; i < size; i++) {
 			for(int k = 1; k < size; k++) {
 				if(((int) field[i][k]) == 0) {
-					field[i][k] = normArea.getChar(i,k,field,size);	// getChar returns the num. of mine fields in the direct location of the field
+					try {
+						field[i][k] = normArea.getChar(i,k,field,size);	// getChar returns the num. of mine fields in the direct location of the field
+					}
+					catch(ArrayIndexOutOfBoundsException e) {
+						System.out.println("Es wurde auf einen Index zugegriffen der nicht existent ist. ");
+					}
 				}
 			}
 		}

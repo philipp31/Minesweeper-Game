@@ -2,7 +2,7 @@
 public class NormalArea implements Fieldable{
 	
 	
-	public char getChar(int row, int column, char[][] field, int size) {	// implementation of the Fieldable-Interface
+	public char getChar(int row, int column, char[][] field, int size) throws ArrayIndexOutOfBoundsException {	// implementation of the Fieldable-Interface
 		int num = 0;
 		int versch = -1;
 		while(versch < 2) {
