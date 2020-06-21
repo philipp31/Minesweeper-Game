@@ -1,6 +1,11 @@
 
-public class NormalArea implements Fieldable{
-	
+/**
+ *
+ * provides a NormalArea-class that describes the normal area in minesweeper
+ *
+ * @author Philipp, Slebioda, 4809007
+ */
+public class NormalArea implements Fieldable {
 	
 	public char getChar(int row, int column, char[][] field, int size) throws ArrayIndexOutOfBoundsException {	// implementation of the Fieldable-Interface
 		int num = 0;

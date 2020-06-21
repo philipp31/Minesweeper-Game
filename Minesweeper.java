@@ -1,4 +1,10 @@
 
+/**
+ *
+ * provides a the main-method for out game "minesweeper"
+ *
+ * @author Philipp, Slebioda, 4809007
+ */
 public class Minesweeper{
 
 	public static void main(String args[]) {

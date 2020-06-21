@@ -1,5 +1,11 @@
 import java.lang.Math;
 
+/**
+ *
+ * provides a Spielfeld-class, that allows it to print and fuel the minesweeper-field + allows the operations
+ *
+ * @author Philipp, Slebioda, 4809007
+ */
 public class Spielfeld {
 	
 	private int size;
@@ -9,9 +15,22 @@ public class Spielfeld {
 	private char[][] shownField;
 	private NormalArea normArea;
 	private Mine mine;
+	private int[][] offenePos;
 	
-	
+	/**
+	 * constructor for the class Spielfeld
+	 *
+	 * @param n size of the field
+	 * @param x number of mines that are in the field
+	 * @param v numb of open fields at the beginning
+	 */
 	public Spielfeld(int n, int x, int v) {
+		offenePos = new int[n][n];
+		for(int i = 0; i < size; i++) {
+			for(int k = 0; k < size; k++) {
+				offenePos[i][k] = 0;
+			}
+		}
 		normArea = new NormalArea();
 		mine = new Mine();
 		this.size = n;
@@ -22,7 +41,20 @@ public class Spielfeld {
 		fuelField();	// field & shownField gets initialized
 	}
 	
-	public void printField() {	// Ausgabe des Feldes für den Spieler!
+	/**
+	 * method getOpenPositions() returns openPositions
+	 *
+	 * @return offenePos array with the open positions
+	 */
+	public int[][] getOpenPositions() {
+		return offenePos;
+	}
+	
+	/**
+	 * method printField() prints the field
+	 *
+	 */
+	public void printField() {	// printing the field for player
 		for(int i = 0; i < size; i++) {
 			for(int k = 0; k < size; k++) {
 				System.out.print(shownField[i][k] + " | ");
@@ -35,10 +67,19 @@ public class Spielfeld {
 		}
 	}
 	
+	/**
+	 * method getField() returns the hidden field
+	 *
+	 * @return field hidden field array
+	 */
 	public char[][] getField() {
 		return field;
 	}
 	
+	/**
+	 * method printHiddenField() prints the hidden field
+	 *
+	 */
 	public void printHiddenField() {
 		for(int i = 0; i < size; i++) {
 			for(int k = 0; k < size; k++) {
@@ -53,10 +94,21 @@ public class Spielfeld {
 		System.out.println("");
 	}
 	
+	/**
+	 * method getShwonField() returns the shown field
+	 *
+	 * @return shownField 
+	 */
 	public char[][] getShownField() {
 		return shownField;
 	}
 	
+	
+	/**
+	 * method fuelCoordSystem() fuels the coord. syst. in the array
+	 *
+	 * @param field field which you want to fuel the coord. sys.
+	 */
 	private void fuelCoordSystem(char[][] field) {
 		int h = 65;
 		for(int i = 0; i < size; i++) {
@@ -69,24 +121,51 @@ public class Spielfeld {
 		}
 	}
 	
-	private void fuelShowField(char[][] field) {
+	/**
+	 * method fuelShowField() fuels the shown field 
+	 *
+	 * @param shownField field das you want to be used as shown field
+	 */
+	private void fuelShowField(char[][] shownField) {
+		int randomNum = 0;
+		int anzOffenFelder = 0;
 		for(int i = 1; i < size; i++) {
 			for(int k = 1; k < size; k++) {
-				shownField[i][k] = ((char) 32);
+				randomNum = ((int) (Math.random()*100));	// double parsen
+				if(anzOffenFelder < openFields) {
+					if(randomNum > 90) {
+						shownField[i][k] = field[i][k];
+						anzOffenFelder++;
+						offenePos[i][k] = 3;
+					}
+					else {
+						shownField[i][k] = ((char) 32);
+					}
+				}
+				else {
+					shownField[i][k] = ((char) 32);
+				}
 			}
 		}
 	}
 	
+	/**
+	 * method fuelField() fuels all fields so that the game is ready to play
+	 *
+	 */
 	private void fuelField() {
+		int anzMinen = 0;
 		fuelCoordSystem(field);
 		fuelCoordSystem(shownField);
-		fuelShowField(shownField);
 		int randomNum = 0;
 		for(int i = 1; i < size; i++) {	// mines get positioned through coincidense
 			for(int k = 1; k < size; k++) {
-				randomNum = (int) (Math.random()*100);	// double parsen
-				if(randomNum > 80) {
-					field[i][k] = mine.getChar(i,k,field,size);					
+				if(anzMinen < numMineFields) {	// mines are random + we want a specific number of mines
+					randomNum = ((int) (Math.random()*100));	// double parsen
+					if(randomNum > 60) {
+						field[i][k] = mine.getChar(i,k,field,size);	
+						anzMinen++;
+					}
 				}
 			}
 		}
@@ -102,8 +181,15 @@ public class Spielfeld {
 				}
 			}
 		}
+		fuelShowField(shownField);
 	}
 	
+	/**
+	 * method entschaerfen() is the move into move of the player
+	 *
+	 * @param row row
+	 * @param column column
+	 */
 	public void entschaerfen(int row, int column) {
 		if(field[row][column] == 'X') {	// DEFUSE MINE
 			shownField[row][column] = '0';	
@@ -113,6 +199,12 @@ public class Spielfeld {
 		}
 	}
 	
+	/**
+	 * method aufdecken() is the move defuse of the player
+	 *
+	 * @param row row
+	 * @param column column
+	 */
 	public void aufdecken(int row, int column) {
 		shownField[row][column] = field[row][column];	// reveal the symbol thats under this pos.
 	}

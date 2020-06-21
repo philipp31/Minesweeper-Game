@@ -1,4 +1,10 @@
 
+/**
+ *
+ * provides a GameCourse-class that controlls the game-flow of the game "minesweeper"
+ *
+ * @author Philipp, Slebioda, 4809007
+ */
 public class GameCourse {
 	
 	private Coordinates coordObj;
@@ -12,10 +18,10 @@ public class GameCourse {
 	//	fieldObj.printHiddenField();		// its possible for the programmer to print the hidden field at the beginning
 	}
 	
-	public int evaluateWin(char[][] field, char[][] originalField) {	// test if Player won
+	public int evaluateWin(char[][] field, char[][] originalField, int[][] openFields) {	// test if Player won
 		for(int i = 1; i < size; i++) {	
 			for(int k = 1; k < size; k++) {
-				if(field[i][k] == 'X') {
+				if(field[i][k] == 'X' && (openFields[i][k] != 3)) {
 					return 1;	//return 1 if the player lost
 				}
 			}
@@ -32,9 +38,9 @@ public class GameCourse {
 	}
 	
 	public boolean loopInformation() {
-		if(evaluateWin(fieldObj.getShownField(), fieldObj.getField()) == -1 || evaluateWin(fieldObj.getShownField(), fieldObj.getField()) == 1) {
+		if(evaluateWin(fieldObj.getShownField(), fieldObj.getField(), fieldObj.getOpenPositions()) == -1 || evaluateWin(fieldObj.getShownField(), fieldObj.getField(),fieldObj.getOpenPositions()) == 1) {
 			fieldObj.printField();	// last time the field gets printed before closing the game
-			if(evaluateWin(fieldObj.getShownField(), fieldObj.getField()) == -1){
+			if(evaluateWin(fieldObj.getShownField(), fieldObj.getField(), fieldObj.getOpenPositions()) == -1){
 				System.out.println("Sie haben das Spiel gewonnen! ");
 			}
 			else {
@@ -47,6 +53,7 @@ public class GameCourse {
 	}
 	
 	public void printInformation()	{
+		System.out.println("");
 		// PRINT FIELD:
 		fieldObj.printField();
 		while(!(coordObj.read())) {	// if false is returnt read again to get a correct statement
