@@ -22,7 +22,7 @@ public class Spielfeld {
 	 *
 	 * @param n size of the field
 	 * @param x number of mines that are in the field
-	 * @param v numb of open fields at the beginning
+	 * @param v number of open fields at the beginning
 	 */
 	public Spielfeld(int n, int x, int v) {
 		offenePos = new int[n][n];

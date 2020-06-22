@@ -104,6 +104,9 @@ public class Coordinates {
 	/**
 	 * method checkCoord() checks if the coord pair is legit
 	 *
+	 * @param column column
+	 * @param row row
+	 * @param fieldSize size of the char array
 	 * @return true or false depends if the input makes sense(true) or it makes no sense(false)
 	 */
 	public boolean checkCoord(char column, int row, int fieldSize) {

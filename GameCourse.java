@@ -11,6 +11,13 @@ public class GameCourse {
 	private Spielfeld fieldObj;
 	private int size;
 	
+	/**
+	 * constructor for the class GameCourse
+	 *
+	 * @param size size of the field
+	 * @param numMines number of mines that are in the field
+	 * @param openFields number of open fields at the beginning
+	 */
 	public GameCourse(int size, int numMines, int openFields) {
 		fieldObj = new Spielfeld(size,numMines,openFields);
 		coordObj = new Coordinates(size);
@@ -18,6 +25,14 @@ public class GameCourse {
 	//	fieldObj.printHiddenField();		// its possible for the programmer to print the hidden field at the beginning
 	}
 	
+	/**
+	 * method evaluateWin() evaluates if the player won or lost
+	 *
+	 * @param field shown field
+	 * @param originalField is the hidden field
+	 * @param openFields is the array which indicates which parts were open at the beginning
+	 * @return int which indicates if player lost/won
+	 */
 	public int evaluateWin(char[][] field, char[][] originalField, int[][] openFields) {	// test if Player won
 		for(int i = 1; i < size; i++) {	
 			for(int k = 1; k < size; k++) {
@@ -37,6 +52,11 @@ public class GameCourse {
 		return -1;	// return -1 if Player won the game!
 	}
 	
+	/**
+	 * method loopInformation() gives for the games loop the condition
+	 *
+	 * @return boolean condition
+	 */
 	public boolean loopInformation() {
 		if(evaluateWin(fieldObj.getShownField(), fieldObj.getField(), fieldObj.getOpenPositions()) == -1 || evaluateWin(fieldObj.getShownField(), fieldObj.getField(),fieldObj.getOpenPositions()) == 1) {
 			fieldObj.printField();	// last time the field gets printed before closing the game
@@ -52,6 +72,11 @@ public class GameCourse {
 		return true;
 	}
 	
+	/**
+	 * method printInformation() prints in every step the game and causes the game flow
+	 *
+	 *
+	 */
 	public void printInformation()	{
 		System.out.println("");
 		// PRINT FIELD:
