@@ -131,7 +131,7 @@ public class Spielfeld {
 		int anzOffenFelder = 0;
 		for(int i = 1; i < size; i++) {
 			for(int k = 1; k < size; k++) {
-				randomNum = ((int) (Math.random()*100));	// double parsen
+				randomNum = ((int) (Math.random()*100));	// open Fields at the beginning are randomly choosen! (coincidence!)
 				if(anzOffenFelder < openFields) {
 					if(randomNum > 90) {
 						shownField[i][k] = field[i][k];
@@ -160,7 +160,7 @@ public class Spielfeld {
 		int randomNum = 0;
 		for(int i = 1; i < size; i++) {	// mines get positioned through coincidense
 			for(int k = 1; k < size; k++) {
-				if(anzMinen < numMineFields) {	// mines are random + we want a specific number of mines
+				if(anzMinen < numMineFields) {	// mines are randomly choosen! + we want a specific number of mines!
 					randomNum = ((int) (Math.random()*100));	// double parsen
 					if(randomNum > 60) {
 						field[i][k] = mine.getChar(i,k,field,size);	
