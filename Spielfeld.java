@@ -16,6 +16,8 @@ public class Spielfeld {
 	private NormalArea normArea;
 	private Mine mine;
 	private int[][] offenePos;
+	private int anzOffenFelder;
+	private int anzMinen;
 	
 	/**
 	 * constructor for the class Spielfeld
@@ -33,12 +35,14 @@ public class Spielfeld {
 		}
 		normArea = new NormalArea();
 		mine = new Mine();
+		anzMinen = 0;
+		anzOffenFelder = 0;
 		this.size = n;
 		this.numMineFields = x;
 		this.openFields = v;
 		field = new char[n][n];
 		shownField = new char[n][n];
-		fuelField();	// field & shownField gets initialized
+		fuelField();		// field & shownField gets initialized
 	}
 	
 	/**
@@ -59,7 +63,7 @@ public class Spielfeld {
 			for(int k = 0; k < size; k++) {
 				System.out.print(shownField[i][k] + " | ");
 			}
-			System.out.println("");	// at the end of each row new line!
+			System.out.println("");		// at the end of each row new line!
 			if(i == 0){
 				System.out.println("_______________________________________");
 				System.out.println("");
@@ -128,12 +132,11 @@ public class Spielfeld {
 	 */
 	private void fuelShowField(char[][] shownField) {
 		int randomNum = 0;
-		int anzOffenFelder = 0;
 		for(int i = 1; i < size; i++) {
 			for(int k = 1; k < size; k++) {
-				randomNum = ((int) (Math.random()*100));	// open Fields at the beginning are randomly choosen! (coincidence!)
+				randomNum = ((int) (Math.random()*100));	// open fields at the beginning are randomly chased!
 				if(anzOffenFelder < openFields) {
-					if(randomNum > 90) {
+					if(randomNum > 95) {
 						shownField[i][k] = field[i][k];
 						anzOffenFelder++;
 						offenePos[i][k] = 3;
@@ -150,17 +153,58 @@ public class Spielfeld {
 	}
 	
 	/**
+	 * method insertOpenFields() inserts open fields if coincidense didnt reach the goal value of open fields
+	 *
+	 * @param shownField field das you want to be used as shown field
+	 */
+	private void insertOpenFields(char[][] shownField) {
+		int randomNum = 0;
+		for(int i = 1; i < size; i++) {
+			for(int k = 1; k < size; k++) {
+				randomNum = ((int) (Math.random()*100));	// open fields at the beginning are randomly chased!
+				if(anzOffenFelder < openFields) {
+					if(randomNum > 90) {
+						shownField[i][k] = field[i][k];
+						anzOffenFelder++;
+						offenePos[i][k] = 3;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * method insertMines() fuels mines in the hidden field if coincidense didnt reach the goal value of mines!
+	 *
+	 * @param field field that you want as reference
+	 */
+	private void insertMines(char[][] Field) {
+		int randomNum = 0;
+		for(int i = 1; i < size; i++) {
+			for(int k = 1; k < size; k++) {
+				randomNum = ((int) (Math.random()*100));	// open fields at the beginning are randomly chased!
+				if(anzMinen < numMineFields) {
+					if(randomNum > 90) {
+						field[i][k] = mine.getChar(i,k,field,size);	
+						anzMinen++;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
 	 * method fuelField() fuels all fields so that the game is ready to play
 	 *
 	 */
 	private void fuelField() {
-		int anzMinen = 0;
 		fuelCoordSystem(field);
 		fuelCoordSystem(shownField);
 		int randomNum = 0;
 		for(int i = 1; i < size; i++) {	// mines get positioned through coincidense
 			for(int k = 1; k < size; k++) {
-				if(anzMinen < numMineFields) {	// mines are randomly choosen! + we want a specific number of mines!
+				if(anzMinen < numMineFields) {	// mines are randomly placed + we want a specific number of mines!
 					randomNum = ((int) (Math.random()*100));	// double parsen
 					if(randomNum > 60) {
 						field[i][k] = mine.getChar(i,k,field,size);	
@@ -181,7 +225,19 @@ public class Spielfeld {
 				}
 			}
 		}
+		// giving more random field elements to reach our goal values! :
+		while(anzMinen < numMineFields) {
+			insertMines(shownField);
+		}
+	/*	System.out.println("anz Minen : " + anzMinen);
+		System.out.println("anz Minen erwartet : " + numMineFields); */
 		fuelShowField(shownField);
+		while(anzOffenFelder < openFields){	// if coincidense doesnt opened enough fields, we open more fields
+			insertOpenFields(shownField);
+		}
+	/*	System.out.println("anz offene Felder : " + anzOffenFelder);
+		System.out.println("anz off. Felder erwartet : " + openFields); */
+	
 	}
 	
 	/**
@@ -207,6 +263,23 @@ public class Spielfeld {
 	 */
 	public void aufdecken(int row, int column) {
 		shownField[row][column] = field[row][column];	// reveal the symbol thats under this pos.
+	}
+	
+	private boolean numOpenFields(char[][] shownField) {
+		int numFields = 0;
+		for(int i = 1; i < size; i++) {
+			for(int k = 1; k < size; k++) {
+				if(shownField[i][k] == 3) {
+					numFields++;
+				}
+			}
+		}
+		if(numFields >= openFields) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }
